@@ -79,8 +79,9 @@ const user = await User.findOne({ email })
 
 export const login = async (req,res)=>{
     const {email,password} = req.body;
-console.log(res)
+    if(!email || !password ) return res.status(400).json({message:"Email and Password Required"})
     try{
+
         const user = await User.findOne({email});
         if(!user) return res.status(400).json({message:"Invalid Credentials"})
 
