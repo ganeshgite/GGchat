@@ -13,7 +13,7 @@ export const generateToken = (userId, res) => {
     }
   )
 
-  res.cookie("jwt",token,{
+  res.cookie("token",token,{
     maAge: 7 * 24 * 60 * 1000, //mili sec
     httpOnly : true,  // prevent xss attacks  : cross site scripting
     sameSite : "strict", // csrf attacks
