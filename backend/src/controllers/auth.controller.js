@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt"
 import { generateToken } from "../lib/utils.js";
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 
 export  const signup = async (req,res)=>{
     const {fullName,email,password,profilePic} = req.body;
@@ -49,6 +50,20 @@ const user = await User.findOne({ email })
                 profilePic:newUser.profilePic
 
             })
+
+            // send a wellcome email to user 
+
+            try{
+                await sendWelcomeEmail(savedUser.email,savedUser.fullName,process.env.CLIENT_URL)
+            }
+            catch(err)
+    {
+        console.log("Error to send wellcome email ", err)
+        
+    }
+
+
+
         }
         else{  
             res.status(400).json({message:"Invalid User Data"})
