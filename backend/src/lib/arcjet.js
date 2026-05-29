@@ -21,9 +21,9 @@ const aj = arcjet({
     tokenBucket({
       mode: "LIVE",
       
-      refillRate: 15, // Refill 5 tokens per interval
+      refillRate: 50, // Refill 5 tokens per interval
       interval: 60, // Refill every 10 seconds
-      capacity: 15, // Bucket capacity of 10 tokens
+      capacity: 50, // Bucket capacity of 10 tokens
        
        
     }),
