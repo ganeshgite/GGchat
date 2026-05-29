@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt"
 import { generateToken } from "../lib/utils.js";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export  const signup = async (req,res)=>{
     const {fullName,email,password,profilePic} = req.body;
@@ -112,4 +113,26 @@ export const logout = (req,res)=>{
 
     res.status(200).json({message:" Logout Successfully"})
 
+}
+
+
+export const updateProfile = async (req,res)=>{
+    try{
+        const {profilePic} = req.body;
+        
+        if(!profilePic) return res.status(400).json({message:"Profile Pic is Require"});
+
+        const userId = req.user._id;
+
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+        const updatedUser = await User.findByIdAndUpdate({userId,profilePic:uploadResponse.secure_url,new:true})
+
+        res.status(200).json(updatedUser)
+    }
+    catch(err){
+        console.log("Error In update profile ", err)
+        res.status(500).json({message:"Internal Error"})
+
+    }
 }
