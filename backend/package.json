@@ -11,6 +11,7 @@
     "live_chat_app": "file:..",
     "mongoose": "^9.6.2",
     "nodemon": "^3.1.14",
+    "react-router-dom": "^7.16.0",
     "resend": "^6.12.4"
   },
   "name": "backend",
