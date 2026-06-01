@@ -7,7 +7,7 @@ export const arcjetProtection = async (req, res, next) => {
       requested: 1,
     });
 
-    console.log(decision);
+    // console.log(decision);
 
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {

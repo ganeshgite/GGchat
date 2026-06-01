@@ -5,14 +5,15 @@ import messageRoutes from "./routes/message.route.js"
 import path from "path";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser"
+import cors from "cors"
 const app = express();
 dotenv.config();
 connectDB()
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({origin:process.env.CLIENT_URL,credentials:true}))
 
-
-
+console.log(cors) 
 const __dirname = path.resolve();
 console.log(path.join(__dirname, "../frontend", "dist","index.html"))
 
