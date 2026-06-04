@@ -8,6 +8,7 @@ export const getAllContacts = async (req,res)=>{
         const loggedInUserId = req.user._id;
 
         const filteredUsers = await User.find({_id:{$ne:loggedInUserId}}).select("-password")
+        
         res.status(200).json(filteredUsers)
     }
     catch(err)
@@ -16,7 +17,7 @@ export const getAllContacts = async (req,res)=>{
         res.status(500).json({message:"Server Error"})
 
     }
-}
+} 
 
 export const getMessagesByUserId = async (req,res)=>{
     try{
@@ -94,7 +95,7 @@ export const getChatPartners = async (req,res)=>{
          })
  
          const ChatPartnersId =[
-            ...new set(messages.map((msg)=> msg.senderId.toString() === loggedInUserId.toString() ?
+            ...new Set(messages.map((msg)=> msg.senderId.toString() === loggedInUserId.toString() ?
          msg.receiverId.toString() : msg.senderId.toString()  ))
          ] 
 

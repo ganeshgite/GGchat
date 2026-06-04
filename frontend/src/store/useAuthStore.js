@@ -1,7 +1,7 @@
 import { axiosInstance } from "../lib/axios"
 import {create} from "zustand"
 import toast from "react-hot-toast"
-
+ 
 export const useAuthStore =create((set)=>({
     authUser:null,
     isCheckingAuth:true,
@@ -21,7 +21,7 @@ export const useAuthStore =create((set)=>({
 
         {
             set({isCheckingAuth: false})
-        }
+        }  
     },
     signup : async(data)=>{
         set({isSigningUp:true})
@@ -82,15 +82,33 @@ export const useAuthStore =create((set)=>({
         }
         catch(err)
         {      
-            toast.error(  
-      err.response?.data?.message
-      || "Something went wrong"
-   );
+            toast.error(  err.response?.data?.message || "Something went wrong" );
         }
         finally{
             set({isSigningUp:false})  
         }
 
-    }
+    },
+    updateProfile : async(data)=>{
+       set({ isUpdatingProfile:true });
+        try{ 
+           
+            const res = await axiosInstance.put("/auth/update-profile",data);
+            // console.log(res)
+
+            set({authUser:res.data})
+
+            toast.success("Profile updated Successfully")
+        }
+        catch(err)
+        {      
+            toast.error( err.response?.data?.message || "Something went wrong"
+   );
+        }
+        finally{
+            set({ isUpdatingProfile:false }); 
+        }
+ 
+    },
     
 }))
