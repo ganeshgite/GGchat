@@ -10,10 +10,17 @@ function ChatContainer() {
   const { selectedUser, getMessagesByUserId, isMessagesLoading, messages } =
     useChatStore();
   const { authUser } = useAuthStore();
+  const messageEndRef = useRef(null)
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
   }, [selectedUser, getMessagesByUserId]);
+
+  useEffect(() => {
+    if(messageEndRef.current){
+        messageEndRef.current.scrollIntoView({behavior:"smooth"})
+    }
+  }, [messages]);
 
   return (
     <>
@@ -38,11 +45,15 @@ function ChatContainer() {
                   )}
                   {msg.text && <p className="mt-2"> {msg.text} </p>}
                   <p className=" tet-sm mt-1 opacity-75 flex items-center gap-1 ">
-                    {new Date(msg.createdAt).toISOString().slice(11, 16)}
+                    {new Date(msg.createdAt).toLocaleTimeString(undefined,{
+                        hour:"2-digit",
+                        minute:"2-digit"
+                    })}
                   </p>
                 </div>
               </div>
             ))}
+            <div className="  " ref={messageEndRef} />
           </div>
         ) : isMessagesLoading ? (
           <MessagesLoadingSkeleton />
