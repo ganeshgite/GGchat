@@ -7,14 +7,18 @@ import MessageInput from "./MessageInput";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
 // import chat from "daisyui"
 function ChatContainer() {
-  const { selectedUser, getMessagesByUserId, isMessagesLoading, messages } =
+  const { selectedUser, getMessagesByUserId, isMessagesLoading, messages , unsubscribeFromMessages, subscribeToMessages } =
     useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null)
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
-  }, [selectedUser, getMessagesByUserId]);
+    subscribeToMessages();
+
+    // clean up
+    return ()=> unsubscribeFromMessages();
+  }, [selectedUser, getMessagesByUserId , subscribeToMessages ,unsubscribeFromMessages ]);
 
   useEffect(() => {
     if(messageEndRef.current){
@@ -36,7 +40,7 @@ function ChatContainer() {
                 <div
                   className={` chat-bubble relative ${msg.senderId === authUser._id ? " bg-cyan-600 text-white " : " bg-slate-800 text-slate-200 "}  `}
                 >
-                  {msg.image && (
+                  {msg.image && (   
                     <img
                       src={msg.image}
                       alt="shared"
@@ -44,7 +48,7 @@ function ChatContainer() {
                     />
                   )}
                   {msg.text && <p className="mt-2"> {msg.text} </p>}
-                  <p className=" tet-sm mt-1 opacity-75 flex items-center gap-1 ">
+                  <p className=" text-sm mt-1 opacity-75 flex items-center gap-1 ">
                     {new Date(msg.createdAt).toLocaleTimeString(undefined,{
                         hour:"2-digit",
                         minute:"2-digit"

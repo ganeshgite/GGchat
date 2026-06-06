@@ -15,8 +15,8 @@ function SignUpPage() {
   };  
   
   return (
-    <div className="w-full flex items-center justify-center p-4 bg-slate-900">
-      <div className="relative w-full max-w-6xl md:h-[800px] h-[650px]">
+    <div className="w-full flex items-center justify-center p-4 bg-slate-900 ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl">
+      <div className="relative w-full max-w-6xl  h-screen">
               
           <div className="w-full flex flex-col md:flex-row ring-2 ring-blue-500/50  shadow-lg shadow-slate-800/50 ">
             {/* FORM CLOUMN - LEFT SIDE */}
