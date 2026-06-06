@@ -10,7 +10,8 @@ function ChatsList() {
 
   useEffect(() => {
     getMyChatPartners();
-  }, [getMyChatPartners]);
+    
+  }, [getMyChatPartners]); 
 
   if (isUsersLoading) return <UsersLoadingSkeleton />;
   if (chats.length === 0) return <NoChatsFound />;
@@ -24,6 +25,7 @@ function ChatsList() {
           onClick={() => setSelectedUser(chat)}
         >
           <div className="flex items-center gap-3">
+        
             <div className={`avatar ${onlineUsers.includes(chat._id) ? "online" : "offline"}`}>
               <div className="size-12 rounded-full">
                 <img src={chat.profilePic || "/avatar.png"} alt={chat.fullName} />
