@@ -13,10 +13,10 @@ function LoginPage() {
   };
 
   return (
-    <div className="w-full flex items-center justify-center p-4 bg-slate-900 ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl">
-      <div className="relative w-full max-w-6xl h-screen ">
-         
-          <div className="w-full flex flex-col md:flex-row">
+    <div className="w-full  flex items-center justify-center p-4 bg-slate-900  ">
+      <div className="relative w-full max-w-6xl   h-screen flex justify-center items-center">
+            
+          <div className="w-full flex flex-col md:flex-row   ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl  ">
             {/* FORM CLOUMN - LEFT SIDE */  }
             <div className="md:w-1/2 p-8 flex items-center justify-center md:border-r border-slate-600/30">
               <div className="w-full max-w-md">
@@ -62,7 +62,7 @@ function LoginPage() {
                   </div>
 
                   {/* SUBMIT BUTTON */}
-                  <button className="auth-btn" type="submit" disabled={isLoggingIn}>
+                  <button className="cursor-pointer auth-btn" type="submit" disabled={isLoggingIn}>
                     {isLoggingIn ? (
                       <LoaderIcon className="w-full h-5 animate-spin text-center" />
                     ) : (

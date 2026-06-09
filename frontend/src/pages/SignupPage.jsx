@@ -1,24 +1,41 @@
 import React, { useState } from 'react'
 import { Loader, LoaderIcon, LockIcon , MailIcon, MessageCircleIcon, UserIcon } from 'lucide-react'
-import { useAuthStore } from '../store/useAuthStore'
-import { Link } from 'react-router-dom'
+import { useAuthStore , } from '../store/useAuthStore'
+import { Link  } from 'react-router-dom'
+import toast from 'react-hot-toast';
 function SignUpPage() {
   const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
-  const { signup, isSigningUp } = useAuthStore();
+  const { signup, isSigningUp , verifyOtp ,generateOtp ,isVerified } = useAuthStore();
 
-  console.log(isSigningUp)
+  // for otp verificaation
+  const [otp,setOtp] = useState("")
+  // console.log(email)
+  // console.log(otp)
 
-  const handleSubmit = (e) => {
-    // console.log(formData)
+  // console.log(isSigningUp)
+
+const handleOtp = ()=>{
+  verifyOtp(formData.email,otp)
+}
+const handleGenerateOtp = ()=>{
+  generateOtp(formData.email)
+}
+
+  const handleSubmit = (e) => { 
+    // console.log(formData)  
     e.preventDefault();
+     if(!isVerified){
+    return toast.error("Please verify OTP first")
+  }
+
     signup(formData);
   };  
   
   return (
-    <div className="w-full flex items-center justify-center p-4 bg-slate-900 ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl">
-      <div className="relative w-full max-w-6xl  h-screen">
+    <div className="w-full  flex items-center justify-center p-4 bg-slate-900 ">
+      <div className="relative w-full max-w-6xl   h-[600px] flex justify-center items-center">
               
-          <div className="w-full flex flex-col md:flex-row ring-2 ring-blue-500/50  shadow-lg shadow-slate-800/50 ">
+          <div className="w-full flex flex-col md:flex-row  ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl ">  
             {/* FORM CLOUMN - LEFT SIDE */}
             <div className="md:w-1/2 p-8 flex items-center justify-center md:border-r border-slate-600/30">
               <div className="w-full max-w-md">
@@ -56,7 +73,7 @@ function SignUpPage() {
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value }) }
                         className="input"
                         placeholder="ganeshgite@gmail.com"
                       />
@@ -79,12 +96,49 @@ function SignUpPage() {
                     </div>
                   </div>
 
-                  {/* SUBMIT BUTTON */}
-                  <button className="auth-btn" type="submit" disabled={isSigningUp}>
+                  {/* OTP Generate BUTTON */}
+
+ <button className="cursor-pointer auth-btn" type="button" onClick={handleGenerateOtp}  >
                     {isSigningUp ? (
                       <LoaderIcon className="w-full h-5 animate-spin text-center" />
                     ) : (
-                      "Create Account"
+                      "Generate OTP"
+                    )}
+                  </button>
+
+                   {/* OTP INPUT */}
+                  <div>
+                    <label className="auth-input-label"> OTP</label>
+                    <div className="relative">
+                      <LockIcon className="auth-input-icon" />
+
+                      <input
+                        type="number"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="input"
+                        placeholder="Enter your OTP"
+                      />
+                    </div>
+                  </div>
+
+                  {/* OTP Verify BUTTON */}
+
+ <button className="cursor-pointer auth-btn" type="button" onClick={handleOtp}  disabled={isVerified} >
+                    {isSigningUp ? (
+                      <LoaderIcon className="w-full h-5 animate-spin text-center" />
+                    ) : (
+                      ` ${isVerified ? "OTP Verified" : "Verify OTP"}`
+                    )}
+                  </button>
+
+                  {/* SUBMIT BUTTON */}
+
+                  <button className="cursor-pointer auth-btn" type="submit" disabled={isSigningUp}>
+                    {isSigningUp ? (
+                      <LoaderIcon className="w-full h-5 animate-spin text-center" />
+                    ) : (
+                      "Sign up"
                     )}
                   </button>
                 </form>

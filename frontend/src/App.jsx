@@ -8,12 +8,13 @@ import PageLoader from "./components/PageLoader";
 import SignUpPage from "./pages/SignUpPage";
 
 const App = () => {
-  const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
+  const { checkAuth, isCheckingAuth, authUser, isVerified } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  console.log({ authUser });
+  // console.log({ authUser });  
+  // console.log({"isVerified": isVerified });  
   if (isCheckingAuth) return <PageLoader />;
 
   return (
@@ -31,7 +32,7 @@ const App = () => {
           <Route
             path="/login"
             element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
-          /> 
+          />   
           <Route
             path="/signup"
             element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}

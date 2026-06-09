@@ -10,10 +10,10 @@ function ChatPage() {
   const { activeTab, selectedUser } = useChatStore();
 
   return (
-    <div className="relative w-full max-w-6xl h-[500px] flex ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl ">
+    <div className="relative w-full max-w-6xl h-175 flex   ring-2 ring-slate-500/50 rounded-lg overflow-hidden shadow-xl    ">
       
         {/* LEFT SIDE */}
-        <div className="w-80 bg-slate-800/50 backdrop-blur-sm flex flex-col">
+        <div className={`w-70 md-w-80 bg-slate-800/50 backdrop-blur-sm flex flex-col  ${selectedUser ? "hidden md:flex" : "flex"}  `}>
           <ProfileHeader />
           <ActiveTabSwitch /> 
 
