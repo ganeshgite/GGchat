@@ -1,5 +1,5 @@
 import express from "express";
-import {signup ,login, logout, updateProfile } from "../controllers/auth.controller.js"
+import {signup ,login, logout, updateProfile, generateOTP, verifyOTP } from "../controllers/auth.controller.js"
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { arcjetProtection } from "../middlewares/arcject.middleware.js";
 
@@ -11,8 +11,10 @@ const router = express.Router();
 router.use(arcjetProtection)
 
 router.get("/test",arcjetProtection,(req,res)=>res.send("called"))
-
+ 
 router.post("/signup", signup )
+router.post("/generate-otp", generateOTP )
+router.post("/verify-otp", verifyOTP )
 
 router.post("/login",arcjetProtection ,login )
 

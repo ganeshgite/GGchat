@@ -1,8 +1,10 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../lib/utils.js";
-import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import { sendWelcomeEmail, sendOTPEmail } from "../emails/emailHandlers.js";
 import cloudinary from "../lib/cloudinary.js";
+import { Resend } from "resend";
+import Otp from "../models/otp.model.js";
 
 export const signup = async (req, res) => {
   const { fullName, email, password, profilePic } = req.body;
@@ -63,6 +65,76 @@ export const signup = async (req, res) => {
     }
   } catch (err) {
     console.log("Error in signup controller", err);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const generateOTP = async (req, res) => {
+ 
+
+  const { email } = req.body;
+
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await sendOTPEmail(email, otp);
+    await Otp.deleteMany({ email });
+
+    const otpData = new Otp({
+      email,
+      otp, 
+      expiresAt: Date.now() + 5 * 60 * 1000,
+    });
+
+    const savedOtp = await otpData.save();
+
+    res.status(201).json({ message: "OTP sent successfully To Email " });
+  } catch (err) {
+    console.log("Error in Generate OTP", err);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res.status(404).json({
+        message: "User already Exists Please Login",
+      });
+    }
+
+    const otpData = await Otp.findOne({ email });
+    if (!otpData) {
+      return res.status(404).json({
+        message: "OTP not found",
+      });
+    }
+    if (new Date(otpData.expiresAt).getTime() < Date.now()) {
+      return res.status(400).json({
+        message: "OTP expired",
+      });
+    }
+    console.log("Saved OTP:", otpData.otp);
+    console.log("Entered OTP:", otp);
+
+    console.log("Saved expiresAt:", otpData.expiresAt);
+    console.log("Current Time:", Date.now());
+    if (otpData.otp.toString() !== otp.toString()) {
+      return res.status(400).json({
+        message: "Invalid OTP",
+      });
+    }
+    await Otp.deleteMany({ email });
+
+    res.status(200).json({
+      message: "OTP verified successfully",
+    });
+  } catch (err) {
+    console.log("Error in Verify OTP", err);
     res.status(500).json({ message: "internal server error" });
   }
 };

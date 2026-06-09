@@ -23,7 +23,7 @@ function ChatContainer() {
   useEffect(() => {
     if(messageEndRef.current){
         messageEndRef.current.scrollIntoView({behavior:"smooth"})
-    }
+    }  
   }, [messages]);
 
   return (

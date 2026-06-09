@@ -27,6 +27,8 @@ export const useChatStore = create((set, get) => ({
         .get("/messages/contacts")
         .then((data) => {
           set({ allContacts: data.data });
+      toast.success(" Contacts Loaded Successfully");
+
         })
         .catch((err) => {
           toast.error(err || "Something went wrong");
@@ -40,13 +42,13 @@ export const useChatStore = create((set, get) => ({
   getMyChatPartners: async () => {
     set({ isUsersLoading: true });
     try {
-    console.log(" runnning")
+     
 
       const res = await axiosInstance.get("/messages/chats") 
-      console.log(res.data)
+    //   console.log(res.data)
 
       set({ chats: res.data });  
-      console.log(chats);
+     
     
       toast.success(" Chat Loaded Successfully");
     } catch (err) {
@@ -62,7 +64,7 @@ export const useChatStore = create((set, get) => ({
           set({ messages: res.data });
       
 
-      toast.success("Logged In Successfully");
+      toast.success("User data Fetched");
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");
     } finally {

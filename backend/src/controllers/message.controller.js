@@ -80,7 +80,7 @@ export const sendMessage = async (req, res) => {
   } catch (err) {
     console.log("Error In sendMessage Controller ", err);
     res.status(500).json({ message: "Internal Error" });
-  }
+  } 
 };
 
 export const getChatPartners = async (req, res) => {
